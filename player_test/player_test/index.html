@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="swfobject.js"></script>
+    <script src="sunlands.player.js"></script>
+</head>
+
+<body>
+    <p>
+        <textarea id="input" cols="40" rows="2" name="output" placeholder="输入直播url">http://sd.8686c.com/01f7d016a774fbe533d3a5f906b651863c061e7c--20180710173840.flv?wsSecret=3bb6391f5daaf5a3424ef1c1d5029952&wsTime=5b9162fa</textarea>
+        <button id="send" onclick="startPlay()">开始播放</button>
+        <button id="puase" onclick="pause()">暂停</button>
+        <button id="resume" onclick="resume()">恢复播放</button>
+        <textarea id="volumeInput" cols="40" rows="2" name="output" placeholder="音量大小">1.0</textarea>
+        <button id="setVolume" onclick="setVolume()">设置音量</button>
+        <textarea id="seekInput" cols="40" rows="2" name="output" placeholder="音量大小">跳转到多少秒钟</textarea>
+        <button id="seekVideo" onclick="seekVideo()">跳转视频</button>
+		 <a href="http://get.adobe.com/cn/flashplayer/" target="_blank" rel="noopener noreferrer">下载</a>
+    </p>
+
+
+    <div id="player1"></div>
+    <script>
+
+        var sunlands_player = new SunlandsPlayer("player1", 800, 600);
+        sunlands_player.on_player_ready = function () {
+            // var buffer_time = 0.5;
+            // if (url.indexOf('.m3u8') > 0) {
+            //     buffer_time = 2;
+            // }
+
+            // if (query.buffer) {
+            //     for (var i = 0; i < bts.length - 1; i++) {
+            //         var cur = bts[i];
+            //         var next = bts[i+1];
+            //         if (Number(query.buffer) >= cur && Number(query.buffer) < next) {
+            //             buffer_time = cur;
+            //             break;
+            //         }
+            //     }
+            // }
+
+            // select_buffer(buffer_time);
+            //重构了之后直接播放，不需要在这个回调播放
+            //console.log("play----------------");
+            this.play(document.getElementById('input').value);
+
+            // pst = new Date();
+        };
+		//startPlay();
+        sunlands_player.on_player_metadata = function (meta) {
+            console.log(meta);
+        }
+        function startPlay() {
+
+            
+            if (status == 0) {
+                console.log(1111)
+                sunlands_player.start();
+                //sunlands_player.play(document.getElementById('input').value,true);
+                status = 1;
+            }
+            else
+            {
+                sunlands_player.play(document.getElementById('input').value);
+            }
+            
+            //sunlands_player.play(document.getElementById('input').value,true);
+            /*
+            setTimeout(function(){
+                    // swfobject
+                    console.log(1111)
+                    sunlands_player.start();
+                } , 2000)
+            */
+            function sunlands_get_version_code() { return "1.0.0"; }
+            sunlands_player.sunlands_get_version_code = sunlands_get_version_code;
+        }
+        function pause() {
+            sunlands_player.pause();
+        }
+
+        function setVolume(){
+            sunlands_player.setVolume(document.getElementById('volumeInput').value);
+        }
+        function resume(){
+            sunlands_player.resume();
+        }
+
+        function seekVideo(){
+            console.log("=============:",document.getElementById("seekInput").value);
+            sunlands_player.seekVideo(document.getElementById('seekInput').value);
+        }
+    </script>
+
+</body>
+
+</html>
